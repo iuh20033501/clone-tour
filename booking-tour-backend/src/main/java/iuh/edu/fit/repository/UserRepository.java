@@ -10,6 +10,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 //    Optional<User> là kiểu trả về khi tìm kiếm một đối tượng User từ cơ sở dữ liệu.
     Optional<User> findByEmail(String email);
 
-    List<User> findByPhoneContaining(String phone);
+    Optional<User> findByPhoneContaining(String phone);
 
 }

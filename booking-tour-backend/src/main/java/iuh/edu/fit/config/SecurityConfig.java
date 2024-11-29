@@ -33,25 +33,26 @@ public class SecurityConfig {
 
     @Autowired
     private AuthServiceImpl authServiceImpl;
+
     // Bean mã hóa mật khẩu
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register","/auth/login","/auth/request-otp","/auth/confirm-otp",
-                        "/auth/forgot-password/request-otp","/auth/forgot-password/reset-password").permitAll() // Các endpoint không cần token.requestMatchers("/auth/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/tours").permitAll()
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-                                .requestMatchers("/users/**").permitAll()
-                                .requestMatchers("/orders/**").permitAll()
+                                .requestMatchers("/auth/register", "/auth/login", "/auth/request-otp", "/auth/confirm-otp",
+                                        "/auth/forgot-password/request-otp", "/auth/forgot-password/reset-password").permitAll()
+//                       .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/tours/**").permitAll()
-                                .requestMatchers("/categories/**").permitAll()
+                                .requestMatchers("/categories/all").permitAll()
+                                .requestMatchers("/orders/**").permitAll()
                                 .requestMatchers("/hoadonkhachvanglai/**").permitAll()
+                                .requestMatchers(
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .requestMatchers("/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -61,6 +62,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -73,10 +75,12 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     // Cấu hình CORS cho toàn bộ ứng dụng
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
@@ -96,30 +100,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true); // Cho phép gửi credentials (cookies, headers)
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:9090"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:9090")); // Cho phép FE
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các phương thức cho phép
+        configuration.setAllowedHeaders(List.of("*")); // Cho phép tất cả headers
+        configuration.addExposedHeader("Authorization"); // Expose header Authorization nếu cần
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Áp dụng CORS cho tất cả các endpoint
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
-
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowCredentials(true);
-//        configuration.setAllowedOrigins(List.of(
-//                "http://localhost:9090",
-//                "http://localhost:5173",
-//                "https://us-central1-texttospeech.googleapis.com"
-//        ));
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-//        configuration.setAllowedHeaders(Collections.singletonList("*"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
-//}
+//

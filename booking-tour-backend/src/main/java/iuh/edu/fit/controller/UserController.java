@@ -1,5 +1,6 @@
 package iuh.edu.fit.controller;
 
+import iuh.edu.fit.dto.UserDetailDTO;
 import iuh.edu.fit.entities.User;
 import iuh.edu.fit.repository.UserRepository;
 import iuh.edu.fit.services.AuthService;
@@ -7,6 +8,10 @@ import iuh.edu.fit.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,14 +40,15 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
     @GetMapping("/search")
-    public ResponseEntity<List<User>> getUsersByPhone(
+    public ResponseEntity<User> getUsersByPhone(
             @RequestParam String phone // Nhận tham số phone từ query
     ) {
-        List<User> users = userServiceImpl.getUsersByPhone(phone);
-        if (users.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Trả về 204 nếu không có kết quả
+        Optional<User> users = userServiceImpl.getUsersByPhone(phone);
+        if (users.isPresent()) {
+            return ResponseEntity.ok(users.get()); // Trả về khách hàng với mã 200 OK nếu tìm thấy
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Trả về 404 nếu không tìm thấy khách hàng
         }
-        return ResponseEntity.ok(users);
     }
     // Phương thức tìm khách hàng theo ID
     @GetMapping("/{id}")
@@ -80,5 +86,18 @@ public class UserController {
 
         // Trả về thông tin khách hàng sau khi cập nhật với mã 200 OK
         return ResponseEntity.ok(updatedUserResult);
+    }
+    @GetMapping("/getMyProfile")
+    public ResponseEntity<?> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+        String email = authentication.getName(); // Lấy email từ Authentication
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserDetailDTO userDTO = new UserDetailDTO(user);
+        return ResponseEntity.ok(userDTO);
     }
 }
