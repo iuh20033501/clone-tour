@@ -52,6 +52,11 @@ public class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers("/users/**").permitAll()
                                 .anyRequest().authenticated()
+                                .requestMatchers("/orders/**").permitAll()
+                                .requestMatchers("/tours/**").permitAll()
+                                .requestMatchers("/categories/**").permitAll()
+                                .requestMatchers("/hoadonkhachvanglai/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
