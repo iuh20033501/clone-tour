@@ -30,10 +30,8 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
         if (existingUser.isPresent()) {
             throw new RuntimeException("Email đã tồn tại!");
         }
-
         // Mã hóa mật khẩu
         String encodedPassword = passwordEncoder.encode(registerDTO.getPassword());
-
         // Tạo người dùng mới
         User user = new User();
         user.setFullName(registerDTO.getFullName());
@@ -45,7 +43,6 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
 
         return userRepository.save(user);
     }
-
     @Override
     public User login(LoginDTO loginDTO) {
         // Tìm người dùng theo email
@@ -74,7 +71,7 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.get().getEmail())
                 .password(user.get().getPassword())
-                .authorities(user.get().getRole()) // Tách roles
+                .authorities(user.get().getRole())
                 .build();
     }
 }

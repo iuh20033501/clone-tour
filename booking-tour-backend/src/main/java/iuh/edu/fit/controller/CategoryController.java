@@ -20,10 +20,7 @@ public class CategoryController {
     private CategoryService categoryService;
     @GetMapping("/all")
     public ResponseEntity<List<Category>> getAllCategories() {
-        // Gọi service để lấy danh sách danh mục
         List<Category> categories = categoryService.getAllCategories();
-
-        // Trả về danh sách danh mục với HTTP 200 (OK)
         return ResponseEntity.ok(categories);
     }
 }
