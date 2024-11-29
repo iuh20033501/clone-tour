@@ -9,4 +9,6 @@ public interface OrderService {
     List<User> getCustomersByTour(Long tourId);
 
     Order createOrder(Long customerId, Long tourId, int soLuongKhach);
+
+    Order getOrderById(Long orderId);
 }

@@ -55,5 +55,10 @@ public class OrderServiceImpl implements OrderService {
         // Lưu đơn hàng vào database
         return orderRepository.save(order);
     }
+    @Override
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+    }
 
 }

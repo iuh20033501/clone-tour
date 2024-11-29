@@ -2,8 +2,10 @@ package iuh.edu.fit.controller;
 
 import iuh.edu.fit.dto.*;
 import iuh.edu.fit.entities.User;
+import iuh.edu.fit.repository.OTPRepository;
 import iuh.edu.fit.services.AuthService;
 import iuh.edu.fit.services.impl.JwtServiceImpl;
+import iuh.edu.fit.services.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,11 +25,16 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private JwtServiceImpl jwtServiceImpl;
-
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+    @Autowired
+    private OTPRepository otpRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @PostMapping("/register")
     public ResponseEntity<String> register(@ModelAttribute RegisterDTO registerDTO) {
         //    ModelAttribute sử dụng cho form data

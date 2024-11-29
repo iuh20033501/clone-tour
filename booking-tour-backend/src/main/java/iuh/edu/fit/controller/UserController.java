@@ -35,10 +35,10 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
     @GetMapping("/search")
-    public ResponseEntity<Optional<User>> getUsersByPhone(
+    public ResponseEntity<List<User>> getUsersByPhone(
             @RequestParam String phone // Nhận tham số phone từ query
     ) {
-        Optional<User> users = userServiceImpl.getUsersByPhone(phone);
+        List<User> users = userServiceImpl.getUsersByPhone(phone);
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build(); // Trả về 204 nếu không có kết quả
         }

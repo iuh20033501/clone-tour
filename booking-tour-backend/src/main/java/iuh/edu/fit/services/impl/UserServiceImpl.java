@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public Optional<User> getUsersByPhone(String phone) {
+    public List<User> getUsersByPhone(String phone) {
         return userRepository.findByPhoneContaining(phone); // Tìm kiếm theo số điện thoại
     }
     @Override
