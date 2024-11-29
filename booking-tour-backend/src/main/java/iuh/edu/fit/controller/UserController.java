@@ -4,7 +4,6 @@ import iuh.edu.fit.entities.User;
 import iuh.edu.fit.repository.UserRepository;
 import iuh.edu.fit.services.AuthService;
 import iuh.edu.fit.services.impl.UserServiceImpl;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,17 +35,13 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
     @GetMapping("/search")
-    public ResponseEntity<List<User>> getUsersByPhone(
+    public ResponseEntity<Optional<User>> getUsersByPhone(
             @RequestParam String phone // Nhận tham số phone từ query
     ) {
-        List<User> users = userServiceImpl.getUsersByPhone(phone);
-
-        // Kiểm tra nếu không tìm thấy người dùng nào
+        Optional<User> users = userServiceImpl.getUsersByPhone(phone);
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build(); // Trả về 204 nếu không có kết quả
         }
-
-        // Trả về danh sách người dùng với mã 200 OK
         return ResponseEntity.ok(users);
     }
     // Phương thức tìm khách hàng theo ID

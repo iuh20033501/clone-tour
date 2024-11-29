@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<User> getUsersByPhone(String phone);
+    Optional<User> getUsersByPhone(String phone);
 
     List<User> getAllUsers();
 

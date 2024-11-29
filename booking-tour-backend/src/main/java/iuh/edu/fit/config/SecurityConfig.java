@@ -39,7 +39,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Các endpoint không cần token.requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/register","/auth/login","/auth/request-otp","/auth/confirm-otp",
+                        "/auth/forgot-password/request-otp","/auth/forgot-password/reset-password").permitAll() // Các endpoint không cần token.requestMatchers("/auth/**").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/api/tours").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
@@ -100,15 +101,7 @@ public class SecurityConfig {
         return source;
     }
 }
-//    @Bean
-//    public WebMvcConfigurer webMvcConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(@NonNull CorsRegistry registry) {
-//                registry.addMapping("/**"); // Enable CORS for all endpoints
-//            }
-//        };
-//    }
+
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource() {
 //        CorsConfiguration configuration = new CorsConfiguration();
