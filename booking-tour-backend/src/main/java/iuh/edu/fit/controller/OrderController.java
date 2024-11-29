@@ -1,19 +1,16 @@
 package iuh.edu.fit.controller;
-import iuh.edu.fit.dto.OrderRequest;
 import iuh.edu.fit.entities.Order;
-import iuh.edu.fit.entities.Tour;
 import iuh.edu.fit.entities.User;
 import iuh.edu.fit.repository.OrderRepository;
 import iuh.edu.fit.repository.TourRepository;
 import iuh.edu.fit.repository.UserRepository;
 import iuh.edu.fit.services.OrderService;
-import iuh.edu.fit.services.impl.OrderServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
@@ -31,30 +28,17 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest) {
-        // Tìm khách hàng theo ID
-        Optional<User> customerOpt = userRepository.findById(orderRequest.getCustomerId());
-        if (customerOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Customer not found!");
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrder(@RequestParam Long customerId,
+                                         @RequestParam Long tourId,
+                                         @RequestParam int soLuongKhach) {
+        try {
+            // Tạo đơn hàng mới
+            Order order = orderService.createOrder(customerId, tourId, soLuongKhach);
+            return new ResponseEntity<>(order, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        // Tìm tour theo ID
-        Optional<Tour> tourOpt = tourRepository.findById(orderRequest.getTourId());
-        if (tourOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Tour not found!");
-        }
-
-        // Tạo hóa đơn mới
-        Order order = new Order();
-        order.setCustomer(customerOpt.get());
-        order.setTour(tourOpt.get());
-        order.setTotalAmount(orderRequest.getTotalAmount());
-
-        // Lưu hóa đơn
-        Order savedOrder = orderRepository.save(order);
-
-        return ResponseEntity.ok(savedOrder);
     }
     // API lấy danh sách các tour đã đặt của khách hàng
     @GetMapping("/customer/{customerId}")

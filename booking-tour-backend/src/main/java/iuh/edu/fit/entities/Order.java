@@ -17,7 +17,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "tour_id", nullable = false)
     private Tour tour; // Tour được đặt (quan hệ Many-to-One với bảng Tour)
-
+    @Column(nullable = false)
+    private int soLuongKhach;
     @Column(nullable = false)
     private LocalDateTime createdDate; // Ngày lập hóa đơn
 
@@ -67,5 +68,13 @@ public class Order {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public int getSoLuongKhach() {
+        return soLuongKhach;
+    }
+
+    public void setSoLuongKhach(int soLuongKhach) {
+        this.soLuongKhach = soLuongKhach;
     }
 }

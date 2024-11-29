@@ -27,8 +27,6 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthService authService;
-    @Autowired
-    private AuthService authService;
     @PostMapping("/register")
     public ResponseEntity<String> register(@ModelAttribute RegisterDTO registerDTO) {
         //    ModelAttribute sử dụng cho form data
