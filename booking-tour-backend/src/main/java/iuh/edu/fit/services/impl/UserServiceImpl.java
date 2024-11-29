@@ -19,36 +19,30 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Override
     public Optional<User> getUsersByPhone(String phone) {
-        return userRepository.findByPhoneContaining(phone); // Tìm kiếm theo số điện thoại
+        return userRepository.findByPhoneContaining(phone);
     }
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll(); // Trả về tất cả người dùng
+        return userRepository.findByRole("EMPLOYEE");
     }
     // Phương thức tìm khách hàng theo ID
     @Override
     public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id); // Trả về một Optional<User> nếu tìm thấy khách hàng
+        return userRepository.findById(id);
     }
     // Phương thức tìm khách hàng theo email
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email); // Giả sử UserRepository có phương thức findByEmail()
+        return userRepository.findByEmail(email);
     }
     // Phương thức sửa thông tin khách hàng
     @Override
     public User updateUser(Long id, User updatedUser) {
-        // Kiểm tra xem khách hàng có tồn tại hay không
         Optional<User> existingUserOpt = userRepository.findById(id);
-
-        // Nếu không tìm thấy khách hàng, trả về null hoặc có thể ném ra một Exception
         if (!existingUserOpt.isPresent()) {
-            return null; // Hoặc có thể ném ra exception nếu muốn
+            return null;
         }
-
         User existingUser = existingUserOpt.get();
-
-        // Cập nhật các trường thông tin của khách hàng
         if (updatedUser.getFullName() != null) {
             existingUser.setFullName(updatedUser.getFullName());
         }
@@ -58,14 +52,10 @@ public class UserServiceImpl implements UserService {
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
-        // Tiếp tục cập nhật các trường khác nếu có
-
-        // Lưu thông tin khách hàng đã được cập nhật vào cơ sở dữ liệu
         return userRepository.save(existingUser);
     }
 
     public List<User> getAllEmployees() {
-        // Lọc danh sách user theo role EMPLOYEE
         return userRepository.findByRole("EMPLOYEE");
     }
 

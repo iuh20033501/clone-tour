@@ -27,11 +27,10 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserServiceImpl userServiceImpl;
-    @GetMapping("/all")
+    @GetMapping("/user")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userServiceImpl.getAllUsers();
 
-        // Kiểm tra nếu danh sách người dùng rỗng
         if (users.isEmpty()) {
             return ResponseEntity.noContent().build(); // Trả về 204 nếu không có người dùng
         }
