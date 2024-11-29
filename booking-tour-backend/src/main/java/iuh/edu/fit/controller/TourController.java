@@ -46,10 +46,7 @@ public class TourController {
     }
     @GetMapping("/{tourId}")
     public ResponseEntity<TourDTO> getTourById(@PathVariable Long tourId) {
-        // Gọi service để lấy thông tin tour theo id
         TourDTO tour = tourService.getTourById(tourId);
-
-        // Trả về 200 OK và thông tin tour
         return ResponseEntity.ok(tour);
     }
 

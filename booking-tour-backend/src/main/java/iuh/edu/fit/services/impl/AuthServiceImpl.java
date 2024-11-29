@@ -43,6 +43,28 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public User registerEmployee(RegisterDTO registerDTO) {
+        // Kiểm tra xem email đã tồn tại chưa
+        Optional<User> existingUser = userRepository.findByEmail(registerDTO.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Email đã tồn tại!");
+        }
+        // Mã hóa mật khẩu
+        String encodedPassword = passwordEncoder.encode(registerDTO.getPassword());
+        // Tạo người dùng mới
+        User user = new User();
+        user.setFullName(registerDTO.getFullName());
+        user.setPhone(registerDTO.getPhone());
+        user.setEmail(registerDTO.getEmail());
+        user.setPassword(encodedPassword);
+        user.setAvatar(registerDTO.getAvatar());
+        user.setRole("EMPLOYEE");
+
+        return userRepository.save(user);
+    }
+
     @Override
     public User login(LoginDTO loginDTO) {
         // Tìm người dùng theo email
