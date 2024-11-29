@@ -100,4 +100,18 @@ public class UserController {
         UserDetailDTO userDTO = new UserDetailDTO(user);
         return ResponseEntity.ok(userDTO);
     }
+    @GetMapping("/employees")
+    public ResponseEntity<List<User>> getAllEmployees() {
+        List<User> employees = userServiceImpl.getAllEmployees();
+        return ResponseEntity.ok(employees);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            userServiceImpl.deleteUserByID(id);
+            return ResponseEntity.ok("User with id " + id + " has been deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

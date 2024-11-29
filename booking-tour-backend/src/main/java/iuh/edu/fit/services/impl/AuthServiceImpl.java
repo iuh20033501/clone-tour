@@ -44,7 +44,7 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
     }
 
     @Override
-    public User registerEmployee(RegisterDTO registerDTO) {
+    public User registerE(RegisterDTO registerDTO) {
         // Kiểm tra xem email đã tồn tại chưa
         Optional<User> existingUser = userRepository.findByEmail(registerDTO.getEmail());
         if (existingUser.isPresent()) {

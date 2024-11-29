@@ -1,9 +1,11 @@
 package iuh.edu.fit.services.impl;
 
+import iuh.edu.fit.entities.Tour;
 import iuh.edu.fit.entities.User;
 import iuh.edu.fit.repository.UserRepository;
 import iuh.edu.fit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public Optional<User> getUsersByPhone(String phone) {
         return userRepository.findByPhoneContaining(phone); // Tìm kiếm theo số điện thoại
@@ -51,12 +55,25 @@ public class UserServiceImpl implements UserService {
         if (updatedUser.getPhone() != null) {
             existingUser.setPhone(updatedUser.getPhone());
         }
-        if (updatedUser.getAvatar() != null) {
-            existingUser.setAvatar(updatedUser.getAvatar());
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
         // Tiếp tục cập nhật các trường khác nếu có
 
         // Lưu thông tin khách hàng đã được cập nhật vào cơ sở dữ liệu
         return userRepository.save(existingUser);
     }
+
+    public List<User> getAllEmployees() {
+        // Lọc danh sách user theo role EMPLOYEE
+        return userRepository.findByRole("EMPLOYEE");
+    }
+
+    public void deleteUserByID(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+        userRepository.delete(user);
+    }
+
+
 }
