@@ -68,4 +68,9 @@ public class HoaDonKhachVangLaiServiceImpl implements HoaDonKhachVangLaiService 
         return hoaDonKhachVangLaiRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy hóa đơn với ID: " + id));
     }
+    // Lấy tất cả các hóa đơn khách vãng lai
+    @Override
+    public List<HoaDonKhachVangLai> getAllHoaDonKhachVangLai() {
+        return hoaDonKhachVangLaiRepository.findAll();
+    }
 }

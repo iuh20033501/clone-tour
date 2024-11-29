@@ -16,4 +16,7 @@ public interface HoaDonKhachVangLaiService {
 
     // Lấy hóa đơn khách vãng lai theo ID
     HoaDonKhachVangLai getHoaDonKhachVangLaiById(Integer id);
+
+    // Lấy tất cả các hóa đơn khách vãng lai
+    List<HoaDonKhachVangLai> getAllHoaDonKhachVangLai();
 }

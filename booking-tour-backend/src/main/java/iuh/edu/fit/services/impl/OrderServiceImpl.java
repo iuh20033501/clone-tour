@@ -60,5 +60,10 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
     }
+    // Lấy tất cả các hóa đơn khách vãng lai
+    @Override
+    public List<Order> getAllHoaDon() {
+        return orderRepository.findAll();
+    }
 
 }

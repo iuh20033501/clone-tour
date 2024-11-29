@@ -11,4 +11,7 @@ public interface OrderService {
     Order createOrder(Long customerId, Long tourId, int soLuongKhach);
 
     Order getOrderById(Long orderId);
+
+    // Lấy tất cả các hóa đơn khách vãng lai
+    List<Order> getAllHoaDon();
 }

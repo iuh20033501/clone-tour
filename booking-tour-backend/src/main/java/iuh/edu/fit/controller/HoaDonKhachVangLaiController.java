@@ -59,4 +59,9 @@ public class HoaDonKhachVangLaiController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<HoaDonKhachVangLai>> getAllHoaDonKhachVangLai() {
+        List<HoaDonKhachVangLai> hoaDons = hoaDonKhachVangLaiServiceImpl.getAllHoaDonKhachVangLai();
+        return ResponseEntity.ok(hoaDons);
+    }
 }

@@ -1,4 +1,5 @@
 package iuh.edu.fit.controller;
+import iuh.edu.fit.entities.HoaDonKhachVangLai;
 import iuh.edu.fit.entities.Order;
 import iuh.edu.fit.entities.User;
 import iuh.edu.fit.repository.OrderRepository;
@@ -77,5 +78,10 @@ public class OrderController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getAllHoaDon() {
+        List<Order> orders = orderService.getAllHoaDon();
+        return ResponseEntity.ok(orders);
     }
 }
