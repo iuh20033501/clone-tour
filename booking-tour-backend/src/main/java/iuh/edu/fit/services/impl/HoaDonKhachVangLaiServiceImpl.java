@@ -62,4 +62,10 @@ public class HoaDonKhachVangLaiServiceImpl implements HoaDonKhachVangLaiService 
                 .map(hoaDon -> new KhachHangVangLaiResponse(hoaDon.getHoTenKhachHang(), hoaDon.getSoDienThoai(), hoaDon.getEmail(), hoaDon.getThanhTien()))
                 .collect(Collectors.toList()); // Chuyển thành danh sách DTO
     }
+    // Lấy hóa đơn khách vãng lai theo ID
+    @Override
+    public HoaDonKhachVangLai getHoaDonKhachVangLaiById(Integer id) {
+        return hoaDonKhachVangLaiRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy hóa đơn với ID: " + id));
     }
+}

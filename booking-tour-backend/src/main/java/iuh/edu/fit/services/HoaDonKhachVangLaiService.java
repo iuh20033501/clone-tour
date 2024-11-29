@@ -13,4 +13,7 @@ public interface HoaDonKhachVangLaiService {
 
     // Lấy danh sách khách hàng vãng lai theo id_tour
     List<KhachHangVangLaiResponse> getCustomersByTourId(Long tourId);
+
+    // Lấy hóa đơn khách vãng lai theo ID
+    HoaDonKhachVangLai getHoaDonKhachVangLaiById(Integer id);
 }

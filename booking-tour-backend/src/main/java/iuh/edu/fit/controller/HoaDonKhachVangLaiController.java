@@ -1,5 +1,4 @@
 package iuh.edu.fit.controller;
-import iuh.edu.fit.dto.HoaDonKhachVangLaiRequest;
 import iuh.edu.fit.dto.KhachHangVangLaiResponse;
 import iuh.edu.fit.entities.HoaDonKhachVangLai;
 import iuh.edu.fit.services.impl.HoaDonKhachVangLaiServiceImpl;
@@ -49,5 +48,15 @@ public class HoaDonKhachVangLaiController {
     public ResponseEntity<List<KhachHangVangLaiResponse>> getCustomersByTourId(@PathVariable Long tourId) {
         List<KhachHangVangLaiResponse> customers = hoaDonKhachVangLaiServiceImpl.getCustomersByTourId(tourId);
         return ResponseEntity.ok(customers); // Trả về danh sách khách hàng
+    }
+    // API xem chi tiết hóa đơn khách vãng lai
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getHoaDonById(@PathVariable Integer id) {
+        try {
+            HoaDonKhachVangLai hoaDon = hoaDonKhachVangLaiServiceImpl.getHoaDonKhachVangLaiById(id);
+            return new ResponseEntity<>(hoaDon, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }
