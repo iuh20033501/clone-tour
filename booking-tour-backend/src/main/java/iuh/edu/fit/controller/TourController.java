@@ -3,6 +3,7 @@ package iuh.edu.fit.controller;
 import com.cloudinary.Cloudinary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import iuh.edu.fit.dto.TourDTO;
+import iuh.edu.fit.entities.Tour;
 import iuh.edu.fit.repository.CategoryRepository;
 import iuh.edu.fit.services.CloudinaryService;
 import iuh.edu.fit.services.TourService;
@@ -133,5 +134,13 @@ public class TourController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTour(@PathVariable Long id, @RequestBody Tour updatedTour) {
+        try {
+            Tour tour = tourService.updateTour(id, updatedTour);
+            return new ResponseEntity<>(tour, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

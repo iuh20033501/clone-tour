@@ -110,4 +110,26 @@ public class TourServiceImpl implements TourService {
         Tour tour = tourRepository.findById(tourId).orElseThrow(()-> new RuntimeException("Tour not found"+tourId));
         tourRepository.delete(tour);
     }
+    // Cập nhật thông tin tour
+    @Override
+    public Tour updateTour(Long id, Tour updatedTour) {
+        // Lấy tour từ DB
+        Tour existingTour = tourRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy tour với ID: " + id));
+
+        // Cập nhật các trường
+        existingTour.setName(updatedTour.getName());
+        existingTour.setPrice(updatedTour.getPrice());
+        existingTour.setDescription(updatedTour.getDescription());
+        existingTour.setDestination(updatedTour.getDestination());
+        existingTour.setDuration(updatedTour.getDuration());
+        existingTour.setCapacity(updatedTour.getCapacity());
+        existingTour.setAvailableSlots(updatedTour.getAvailableSlots());
+        existingTour.setImages(updatedTour.getImages());
+        existingTour.setEndDate(updatedTour.getEndDate());
+        existingTour.setStartDate(updatedTour.getStartDate());
+
+        // Lưu lại
+        return tourRepository.save(existingTour);
+    }
 }

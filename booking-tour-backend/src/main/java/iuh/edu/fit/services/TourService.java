@@ -11,4 +11,7 @@ public interface TourService {
     TourDTO addTour(TourDTO tourDTO);
     List<TourDTO> getToursByCategory(String categoryName);
     void deleteTourById(Long tourId);
+
+    // Cập nhật thông tin tour
+    Tour updateTour(Long id, Tour updatedTour);
 }
