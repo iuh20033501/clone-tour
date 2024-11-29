@@ -40,7 +40,6 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
         user.setPassword(encodedPassword);
         user.setAvatar(registerDTO.getAvatar());
         user.setRole("USER");
-
         return userRepository.save(user);
     }
 

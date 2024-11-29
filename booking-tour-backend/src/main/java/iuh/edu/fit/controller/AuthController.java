@@ -38,9 +38,7 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @PostMapping("/register")
-    public ResponseEntity<String> register(@ModelAttribute RegisterDTO registerDTO) {
-        //    ModelAttribute sử dụng cho form data
-        System.out.println("Name: " + registerDTO);
+    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {
         System.out.println("Name: " + registerDTO.getFullName());
         System.out.println("Phone: " + registerDTO.getPhone());
         System.out.println("Email: " + registerDTO.getEmail());
@@ -50,7 +48,7 @@ public class AuthController {
 
         // Xử lý đăng ký
         User newUser = authService.register(registerDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("success");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Đăng kí thành công");
     }
 
     @PostMapping("/registerEmployee")
@@ -61,9 +59,6 @@ public class AuthController {
         System.out.println("Phone: " + registerDTO.getPhone());
         System.out.println("Email: " + registerDTO.getEmail());
         System.out.println("Password: " + registerDTO.getPassword());
-        System.out.println("Avatar: " + registerDTO.getAvatar());
-        System.out.println("Role: " + registerDTO.getRole());
-
         // Xử lý đăng ký
         User newUser = authService.register(registerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
