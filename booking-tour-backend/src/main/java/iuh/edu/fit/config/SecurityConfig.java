@@ -39,13 +39,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // Các endpoint không cần token
+                        .requestMatchers("/auth/**").permitAll() // Các endpoint không cần token.requestMatchers("/auth/**").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/api/tours").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
+                                .requestMatchers("/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -71,29 +72,57 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    // Cấu hình CORS cho toàn bộ ứng dụng
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**"); // Enable CORS for all endpoints
+                registry.addMapping("/**") // Enable CORS for all endpoints
+                        .allowedOrigins("http://localhost:5173", "http://localhost:9090") // Cho phép truy cập từ các domain này
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Các phương thức HTTP cho phép
+                        .allowedHeaders("*") // Cho phép tất cả các headers
+                        .allowCredentials(true); // Cho phép gửi cookies
             }
         };
     }
+
+    // Cấu hình CORS cho các endpoint API
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:9090",
-                "http://localhost:5173",
-                "https://us-central1-texttospeech.googleapis.com"
-        ));
+        configuration.setAllowCredentials(true); // Cho phép gửi credentials (cookies, headers)
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:9090"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Áp dụng CORS cho tất cả các endpoint
         return source;
     }
 }
+//    @Bean
+//    public WebMvcConfigurer webMvcConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(@NonNull CorsRegistry registry) {
+//                registry.addMapping("/**"); // Enable CORS for all endpoints
+//            }
+//        };
+//    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowCredentials(true);
+//        configuration.setAllowedOrigins(List.of(
+//                "http://localhost:9090",
+//                "http://localhost:5173",
+//                "https://us-central1-texttospeech.googleapis.com"
+//        ));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//        configuration.setAllowedHeaders(Collections.singletonList("*"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
+
+//}
