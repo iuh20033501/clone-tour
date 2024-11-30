@@ -39,20 +39,54 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(Long id, User updatedUser) {
         Optional<User> existingUserOpt = userRepository.findById(id);
-        if (!existingUserOpt.isPresent()) {
+        if (existingUserOpt.isEmpty()) {
+            System.out.println("User không tồn tại với ID: " + id);
             return null;
         }
+
         User existingUser = existingUserOpt.get();
+
         if (updatedUser.getFullName() != null) {
             existingUser.setFullName(updatedUser.getFullName());
         }
+
         if (updatedUser.getPhone() != null) {
             existingUser.setPhone(updatedUser.getPhone());
         }
+
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            System.out.println("Mật khẩu trước khi mã hóa: " + updatedUser.getPassword());
+            String encodedPassword = passwordEncoder.encode(updatedUser.getPassword());
+            System.out.println("Mật khẩu sau khi mã hóa: " + encodedPassword);
+            existingUser.setPassword(encodedPassword);
         }
-        return userRepository.save(existingUser);
+
+        User savedUser = userRepository.save(existingUser);
+        System.out.println("Mật khẩu trong DB sau khi lưu: " + savedUser.getPassword());
+        return savedUser;
+    }
+
+    @Override
+    public User changePass(Long id, User updatedUser) {
+        Optional<User> existingUserOpt = userRepository.findById(id);
+        if (existingUserOpt.isEmpty()) {
+            System.out.println("User không tồn tại với ID: " + id);
+            return null;
+        }
+
+        User existingUser = existingUserOpt.get();
+
+        if (updatedUser.getFullName() != null) {
+            existingUser.setFullName(updatedUser.getFullName());
+        }
+
+        if (updatedUser.getPhone() != null) {
+            existingUser.setPhone(updatedUser.getPhone());
+        }
+
+        User savedUser = userRepository.save(existingUser);
+        System.out.println("Mật khẩu trong DB sau khi lưu: " + savedUser.getPassword());
+        return savedUser;
     }
 
     public List<User> getAllEmployees() {

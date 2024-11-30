@@ -19,6 +19,9 @@ public interface UserService {
 
     // Phương thức sửa thông tin khách hàng
     User updateUser(Long id, User updatedUser);
+
+    User changePass(Long id, User updatedUser);
+
     public List<User> getAllEmployees();
     void deleteUserByID(Long tourId);
     List<User> getAll();

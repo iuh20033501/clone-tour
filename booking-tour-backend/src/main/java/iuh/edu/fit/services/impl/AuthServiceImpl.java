@@ -7,6 +7,7 @@ import iuh.edu.fit.repository.UserRepository;
 import iuh.edu.fit.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -86,13 +87,16 @@ public class AuthServiceImpl implements UserDetailsService, AuthService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found with username: " + user);
+            throw new UsernameNotFoundException("User not found with username: " + email);
         }
+        System.out.println("User found: " + user.get().getEmail());
+        System.out.println("Role: " + user.get().getRole());
+        System.out.println("Password: " + user.get().getPassword());
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.get().getEmail())
                 .password(user.get().getPassword())
-                .authorities(user.get().getRole())
+                .authorities(new SimpleGrantedAuthority("ROLE_" + user.get().getRole()))
                 .build();
     }
 }

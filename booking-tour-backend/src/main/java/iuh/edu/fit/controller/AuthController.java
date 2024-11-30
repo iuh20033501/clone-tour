@@ -106,7 +106,7 @@ public class AuthController {
                 return ResponseEntity.badRequest().body("Mật khẩu cũ không chính xác");
             }
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-            userServiceImpl.updateUser(user.getId(),user);
+            userServiceImpl.changePass(user.getId(),user);
             return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công");
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +137,7 @@ public class AuthController {
         }
         User user = optionalUser.get();
         user.setPassword(passwordEncoder.encode(newPassword));
-        userServiceImpl.updateUser(user.getId(),user);
+        userServiceImpl.changePass(user.getId(),user);
 
         return ResponseEntity.ok("Đặt lại mật khẩu thành công.");
     }
