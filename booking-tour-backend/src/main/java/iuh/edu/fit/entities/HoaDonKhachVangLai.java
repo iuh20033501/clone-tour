@@ -1,8 +1,14 @@
 package iuh.edu.fit.entities;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "hoa_don_khach_vang_lai")
 public class HoaDonKhachVangLai {
@@ -35,67 +41,5 @@ public class HoaDonKhachVangLai {
 
     // Getters và Setters
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getHoTenKhachHang() {
-        return hoTenKhachHang;
-    }
-
-    public void setHoTenKhachHang(String hoTenKhachHang) {
-        this.hoTenKhachHang = hoTenKhachHang;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public double getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(double thanhTien) {
-        this.thanhTien = thanhTien;
-    }
-
-    public int getSoLuongKhach() {
-        return soLuongKhach;
-    }
-
-    public void setSoLuongKhach(int soLuongKhach) {
-        this.soLuongKhach = soLuongKhach;
-    }
-
-    public Tour getTour() {
-        return tour;
-    }
-
-    public void setTour(Tour tour) {
-        this.tour = tour;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

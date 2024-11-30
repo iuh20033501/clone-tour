@@ -73,4 +73,16 @@ public class HoaDonKhachVangLaiServiceImpl implements HoaDonKhachVangLaiService 
     public List<HoaDonKhachVangLai> getAllHoaDonKhachVangLai() {
         return hoaDonKhachVangLaiRepository.findAll();
     }
+
+    @Override
+    public List<HoaDonKhachVangLai> findByEmail(String email) {
+        return hoaDonKhachVangLaiRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<HoaDonKhachVangLai> findBySoDienThoai(String soDienThoai) {
+        return hoaDonKhachVangLaiRepository.findBySoDienThoai(soDienThoai);
+    }
+
+
 }

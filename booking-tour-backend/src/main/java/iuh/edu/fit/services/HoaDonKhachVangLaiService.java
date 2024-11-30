@@ -19,4 +19,8 @@ public interface HoaDonKhachVangLaiService {
 
     // Lấy tất cả các hóa đơn khách vãng lai
     List<HoaDonKhachVangLai> getAllHoaDonKhachVangLai();
+
+    List<HoaDonKhachVangLai> findByEmail(String email);
+
+    List<HoaDonKhachVangLai> findBySoDienThoai(String soDienThoai);
 }

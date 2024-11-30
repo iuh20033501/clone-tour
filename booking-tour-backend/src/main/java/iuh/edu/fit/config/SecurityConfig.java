@@ -49,13 +49,14 @@ public class SecurityConfig {
                                 .requestMatchers("/hoadonkhachvanglai/**").permitAll()
                                 .requestMatchers("/auth/registerEmployee").permitAll()
                                 .requestMatchers("/users/**").permitAll()
+                                .requestMatchers("/hoadonkhachvanglai/findByEmail", "/hoadonkhachvanglai/findByPhone").permitAll()
                                 .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
                                 .requestMatchers("/users/**").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

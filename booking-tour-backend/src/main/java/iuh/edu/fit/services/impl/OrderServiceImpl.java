@@ -10,7 +10,9 @@ import iuh.edu.fit.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +61,25 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+    }
+
+    @Override
+    public List<Order> getOrdersByCustomerId(Long customerId) {
+        return null;
+    }
+
+    @Override
+    public List<Order> getOrdersByCustomer(Long customerId) {
+        // Lấy thông tin User từ customerId
+        Optional<User> user = userRepository.findById(customerId);
+        if (user.isPresent()) {
+            // Nếu User tồn tại, lấy danh sách Order liên quan
+            return orderRepository.findByCustomer(user);
+        } else {
+            // Nếu không tìm thấy User, trả về danh sách rỗng
+            System.out.println("User not found with ID: " + customerId);
+            return new ArrayList<>();
+        }
     }
     // Lấy tất cả các hóa đơn khách vãng lai
     @Override

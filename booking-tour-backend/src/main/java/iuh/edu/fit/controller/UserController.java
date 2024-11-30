@@ -113,4 +113,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAll() {
+        try {
+            List<User> users = userServiceImpl.getAll();
+            if (users.isEmpty()) {
+                return ResponseEntity.noContent().build(); // Trả về HTTP 204 nếu không có dữ liệu
+            }
+            return ResponseEntity.ok(users); // Trả về danh sách người dùng
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // Trả về HTTP 500 nếu có lỗi xảy ra
+        }
+    }
 }

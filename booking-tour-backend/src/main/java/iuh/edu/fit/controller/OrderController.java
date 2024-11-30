@@ -47,20 +47,12 @@ public class OrderController {
     // API lấy danh sách các tour đã đặt của khách hàng
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getOrdersByCustomer(@PathVariable Long customerId) {
-        // Kiểm tra xem khách hàng có tồn tại trong hệ thống không
-        Optional<User> customerOpt = userRepository.findById(customerId);
-        if (customerOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Customer not found!");
-        }
-
-        // Lấy danh sách các đơn hàng của khách hàng
-        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        List<Order> orders = orderServiceImpl.getOrdersByCustomer(customerId);
 
         if (orders.isEmpty()) {
             return ResponseEntity.ok("No orders found for this customer.");
         }
 
-        // Trả về danh sách các tour mà khách hàng đã đặt
         return ResponseEntity.ok(orders);
     }
     // API lấy danh sách khách hàng đã đặt tour
@@ -84,4 +76,5 @@ public class OrderController {
         List<Order> orders = orderService.getAllHoaDon();
         return ResponseEntity.ok(orders);
     }
+
 }

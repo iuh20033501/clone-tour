@@ -21,5 +21,7 @@ public interface UserService {
     User updateUser(Long id, User updatedUser);
     public List<User> getAllEmployees();
     void deleteUserByID(Long tourId);
+    List<User> getAll();
+
 
 }

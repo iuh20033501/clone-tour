@@ -12,6 +12,10 @@ public interface OrderService {
 
     Order getOrderById(Long orderId);
 
+    List<Order> getOrdersByCustomerId(Long customerId);
+
+    List<Order> getOrdersByCustomer(Long customerId);
+
     // Lấy tất cả các hóa đơn khách vãng lai
     List<Order> getAllHoaDon();
 }

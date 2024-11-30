@@ -64,4 +64,29 @@ public class HoaDonKhachVangLaiController {
         List<HoaDonKhachVangLai> hoaDons = hoaDonKhachVangLaiServiceImpl.getAllHoaDonKhachVangLai();
         return ResponseEntity.ok(hoaDons);
     }
+    @GetMapping("/findByEmail/{email}")
+    public ResponseEntity<?> findByEmail(@PathVariable String email) {
+        if (email == null || email.isEmpty()) {
+            return ResponseEntity.badRequest().body("Email không được để trống.");
+        }
+        List<HoaDonKhachVangLai> results = hoaDonKhachVangLaiServiceImpl.findByEmail(email);
+        if (results.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Không tìm thấy hóa đơn với email: " + email);
+        }
+        return ResponseEntity.ok(results);
+    }
+    @GetMapping("/findByPhone/{soDienThoai}")
+    public ResponseEntity<?> findByPhone(@PathVariable String soDienThoai) {
+        if (soDienThoai == null || soDienThoai.isEmpty()) {
+            return ResponseEntity.badRequest().body("Số điện thoại không được để trống.");
+        }
+        List<HoaDonKhachVangLai> results = hoaDonKhachVangLaiServiceImpl.findBySoDienThoai(soDienThoai);
+        if (results.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Không tìm thấy hóa đơn với số điện thoại: " + soDienThoai);
+        }
+        return ResponseEntity.ok(results);
+    }
+
 }
